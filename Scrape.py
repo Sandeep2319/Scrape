@@ -64,30 +64,27 @@ def get_description(soup):
     return description
 
 # Function to extract Manufacturer
-def get_Manufacturer(soup):
+def get_manufacturer(soup):
     try:
-        Manufacturer = soup.find("div", attrs={"id": 'detailBullets_feature_div'}).find_all("li")[2].find_all("span")[2].text.strip()
+        manufacturer = soup.find("div", attrs={"id": 'detailBullets_feature_div'}).find_all("li")[2].find_all("span")[2].text.strip()
 
     except AttributeError:
-        Manufacturer = ""
+        manufacturer = ""
 
     
     return Manufacturer
 
 # Function to extract ASIN number
 
-def get_ASIN_number(soup):
+def get_asin_number(soup):
 
     try:
-        ASIN_number = soup.find("div", attrs={"id": 'detailBullets_feature_div'}).find_all("li")[3].find_all("span")[2].text.strip()
+        asin_number = soup.find("div", attrs={"id": 'detailBullets_feature_div'}).find_all("li")[3].find_all("span")[2].text.strip()
 
     except AttributeError:
-         ASIN_number = ""
-
-    print(ASIN_number)
-
-    return  ASIN_number
-
+         asin_number = ""
+        
+    return  asin_number
 
 if __name__ == '__main__':
 
@@ -112,7 +109,7 @@ if __name__ == '__main__':
     for link in links:
             links_list.append(link.get('href'))
 
-    d = {"title":[], "price":[], "rating":[], "reviews":[], "description":[], "Manufacturer": [], "ASIN_number": []}
+    d = {"title":[], "price":[], "rating":[], "reviews":[], "description":[], "manufacturer": [], "asin_number": []}
 
     # Loop for extracting product details from each link 
     for link in links_list:
@@ -128,8 +125,8 @@ if __name__ == '__main__':
         d['rating'].append(get_rating(new_soup))
         d['reviews'].append(get_review_count(new_soup))
         d['description'].append(get_description(new_soup))
-        d['Manufacturer'].append(get_Manufacturer(new_soup))
-        d['ASIN_number'].append(get_ASIN_number(new_soup))
+        d['manufacturer'].append(get_manufacturer(new_soup))
+        d['asin_number'].append(get_ASIN_number(new_soup))
 
     amazon_df = pd.DataFrame.from_dict(d)
     amazon_df['title'].replace('', np.nan, inplace=True)
