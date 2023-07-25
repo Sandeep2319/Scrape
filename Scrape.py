@@ -7,18 +7,18 @@ def get_title(soup):
 
     try:
         # Outer Tag Object
-        title = soup.find("span", attrs={"id":'productTitle'}).text.strip()
+        title = soup.find("span", attrs={"id":'productTitle'})
         # Inner NavigatableString Object
         title_value = title.text
 
         # Title as a string value
         title_string = title_value.strip()
-
+    
     except AttributeError:
         title_string = ""
-
-
-    return title
+    
+    return title_string
+    
 
 # Function to extract Product Price
 def get_price(soup):
@@ -28,6 +28,8 @@ def get_price(soup):
         price = ""
  
     return price
+    print(price,"hello")
+
 
 # Function to extract Product Rating
 def get_rating(soup):
@@ -44,14 +46,14 @@ def get_rating(soup):
     return rating
 
 # Function to extract Number of User Reviews
-def get_review_count(soup):
+def get_reviews(soup):
     try:
-        review_count = soup.find("span", attrs={'id':'acrCustomerReviewText'}).string.strip()
+        reviews = soup.find("span", attrs={'id':'acrCustomerReviewText'}).string.strip()
 
     except AttributeError:
-        review_count = ""	
+        reviews = ""	
 
-    return review_count
+    return reviews
 
 # Function to extract Description
 def get_description(soup):
@@ -70,9 +72,8 @@ def get_manufacturer(soup):
 
     except AttributeError:
         manufacturer = ""
-
     
-    return Manufacturer
+    return manufacturer
 
 # Function to extract ASIN number
 
@@ -83,8 +84,9 @@ def get_asin_number(soup):
 
     except AttributeError:
          asin_number = ""
-        
+
     return  asin_number
+    
 
 if __name__ == '__main__':
 
@@ -123,10 +125,10 @@ if __name__ == '__main__':
         d['title'].append(get_title(new_soup))
         d['price'].append(get_price(new_soup))
         d['rating'].append(get_rating(new_soup))
-        d['reviews'].append(get_review_count(new_soup))
+        d['reviews'].append(get_reviews(new_soup))
         d['description'].append(get_description(new_soup))
         d['manufacturer'].append(get_manufacturer(new_soup))
-        d['asin_number'].append(get_ASIN_number(new_soup))
+        d['asin_number'].append(get_asin_number(new_soup))
 
     amazon_df = pd.DataFrame.from_dict(d)
     amazon_df['title'].replace('', np.nan, inplace=True)
